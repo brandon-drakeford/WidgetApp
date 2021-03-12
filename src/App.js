@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Accordion from './components/Accordion'
 import Search from './components/Search'
 import Dropdown from './components/Dropdown'
@@ -39,26 +39,35 @@ const options = [
 
 const App = () => {
     const [selected, setSelected] = useState(options[0])
-    const [gitPath, setGitPath] = useState(window.location.pathname)
+    const [gitPath, setGitPath] = useState(false)
+
+    useEffect(() => {
+        if (window.location.pathname.indexOf('WidgetApp') !== -1) {
+            setGitPath(true)
+        } else {
+            setGitPath(false)
+        }
+
+    }, [gitPath])
 
     return (
     <div>
         <Header gitPath={gitPath}/>
 
         <div style={{ marginTop: '30px' }} className="ui container">
-            <Route path={gitPath === '/WidgetApp/' ? gitPath : '/'} onSetPath={setGitPath}>
+            <Route path={gitPath ? '/WidgetApp/' : '/'}>
                  <Accordion items={items} />
             </Route>
 
-            <Route path={gitPath === '/WidgetApp/list' ? gitPath : '/list'} onSetPath={setGitPath}>
+            <Route path={gitPath ? '/WidgetApp/list' : '/list'}>
                   <Search />
             </Route>
 
-            <Route path={gitPath === '/WidgetApp/dropdown' ? gitPath : '/dropdown'} onSetPath={setGitPath}>
+            <Route path={gitPath ? '/WidgetApp/dropdown' : '/dropdown'}>
                 <Dropdown label="Select a color" selected={selected} onSelectedChange={setSelected} options={options} />
             </Route>
 
-            <Route path={gitPath === '/WidgetApp/translate' ? gitPath : '/translate'} onSetPath={setGitPath}>
+            <Route path={gitPath ? '/WidgetApp/translate' : '/translate'}>
                  <Translate />
             </Route>
         </div>
