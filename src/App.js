@@ -37,27 +37,28 @@ const options = [
     }
 ]
 
-export default () => {
+const App = () => {
     const [selected, setSelected] = useState(options[0])
+    const [gitPath, setGitPath] = useState(window.location.pathname)
 
     return (
     <div>
-        <Header />
+        <Header gitPath={gitPath}/>
 
         <div style={{ marginTop: '30px' }} className="ui container">
-            <Route path ="/">
+            <Route path={gitPath === '/WidgetApp/' ? gitPath : '/'} onSetPath={setGitPath}>
                  <Accordion items={items} />
             </Route>
 
-            <Route path ="/list">
+            <Route path={gitPath === '/WidgetApp/list' ? gitPath : '/list'} onSetPath={setGitPath}>
                   <Search />
             </Route>
 
-            <Route path ="/dropdown">
+            <Route path={gitPath === '/WidgetApp/dropdown' ? gitPath : '/dropdown'} onSetPath={setGitPath}>
                 <Dropdown label="Select a color" selected={selected} onSelectedChange={setSelected} options={options} />
             </Route>
 
-            <Route path ="/translate">
+            <Route path={gitPath === '/WidgetApp/translate' ? gitPath : '/translate'} onSetPath={setGitPath}>
                  <Translate />
             </Route>
         </div>
@@ -66,3 +67,5 @@ export default () => {
     </div>
     )
 }
+
+export default App
